@@ -1,0 +1,200 @@
+{if="$drawMenu[19]['PERMISSAO_VISUALIZAR']== 'SIM'"}
+<div class="content">
+
+    <div class="col-md-12">
+      <form role="form" action="/admin/manutencao/{$ID_MANUTENCE}/item" method="post">
+        <input type="hidden" id="ID_MANUTENCE" name="ID_MANUTENCE" value = "{$ID_MANUTENCE}">
+        <!-- card personal data -->
+        <div class="card">
+          <div class="card-header card-header-primary card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">add_shopping_cart</i>
+            </div>
+            <h4 class="card-title">Adicionar Ítem
+            </h4>
+          </div>
+          <div class="card-body">            
+            <!-- first line -->
+            <div class="row">
+                <!-- Dates -->
+                <div class="col-md-4">
+                    <div class="form-group bmd-form-group">
+                        Ítem
+                        <input
+                        id      ="ITEM"
+                        name    ="ITEM"
+                        type    ="text"
+                        class   ="form-control"
+                        required="true"
+                        >
+                      </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group bmd-form-group">
+                      Descrição
+                      <input
+                      id      ="DESCRICAO"
+                      name    ="DESCRICAO"
+                      type    ="text"
+                      class   ="form-control"
+                      >
+                    </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bmd-form-group">
+                    Fornecedor
+                    <select
+                      class="form-control selectpicker"
+                      data-style="btn btn-link"
+                      id="COD_CLI_FORN"
+                      name="COD_CLI_FORN"
+                      required="true"
+                      >
+                      <option value ="">Selecione o veículo</option>
+                        {loop="$fornecedores"}
+                          <option value="{$value.COD_CLI_FORN}">{$value.RAZAO_SOCIAL} - {$value.CNPJ}</option>
+                        {/loop}
+                    </select>
+                </div>
+              </div>
+            </div><!-- close row -->
+            <div class="row"><!-- open row -->
+              <div class="col-md-2">
+                <div class="form-group bmd-form-group">
+                    Qtd
+                    <input
+                    id      ="QTD"
+                    name    ="QTD"
+                    type    ="text"
+                    class   ="form-control maskPercent"
+                    onkeyup="calcular()"
+                    required="true"
+                    >
+                  </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group bmd-form-group">
+                    Valor Unit
+                    <input
+                    id      ="VALOR"
+                    name    ="VALOR"
+                    type    ="text"
+                    class   ="form-control inputNumberDec"                    
+                    onkeyup="calcular()"
+                    required="true"
+                    >
+                  </div>
+              </div>
+
+
+              <div class="col-md-2">
+                <div class="form-group bmd-form-group">
+                    Valor Unit
+                    <input
+                    id      ="SUBTOTAL"
+                    name    ="SUBTOTAL"
+                    type    ="text"
+                    class   ="form-control maskMoney"
+                    disabled
+                    >
+                  </div>
+              </div>   
+              <div class="col-md-2">
+                <div class="form-group bmd-form-group">
+                    Garantia (Meses)
+                    <input
+                    id      ="GARANTIA_DIAS"
+                    name    ="GARANTIA_DIAS"
+                    type    ="text"
+                    class   ="form-control inputNumber"
+
+                    >
+                  </div>
+              </div>   
+                     
+            </div><!-- close row -->
+            <br>
+            <div class="row">
+              <!-- button back -->
+              <div class="col-md-6 text-left">
+                <a class="btn" href="/admin/manutencao">
+                  <i class="material-icons">undo</i>
+                  <span class="sidebar-normal"> Voltar a lista de manutenções</span>
+                </a>
+              </div>
+              <!-- button save -->
+              <div class="col-md-6 text-right">
+                <button class="btn btn-large btn-warning pull-right">
+                  <span class="btn-label">
+                    <i class="material-icons">add</i>
+                  </span>
+                  Cadastrar
+                </button>                     
+              </div>
+            </div> 
+          </div>
+          <br>
+        </div>
+
+        <!-- card de cadastro de Observações -->
+        <div class="card">
+          <div class="card-header card-header-primary card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">receipt</i>
+            </div>
+            <h4 class="card-title">Ítens Cadastrados
+            </h4>
+          </div>
+          <div class="card-body">            
+            <!-- card de cadastro de valores -->
+            <div class="row">
+              <div class="form-group col-md-12">
+                <table class="table table-bordered table-striped col-" style="table-layout: responsive">
+                  <tbody>
+                    <tr>
+                      <th>Ítem</th>
+                      <th>Descrição</th>
+                      <th>Fornecedor</th>
+                      <th class="text-center">Qtd</th>
+                      <th class="text-center">Valor Unit</th>
+                      <th class="text-center">Sub Total</th>
+                      <th colspan="2" align="center"></th>
+                    </tr>
+                    <tr>
+                    {loop="$manutencaoItens"}
+                      <td>{$value.ITEM}</td>
+                      <td>{$value.DESCRICAO}</td>
+                      <td>{$value.RAZAO_SOCIAL}</td>
+                      <td align="center">{$value.QTD}</td>
+                      <td class="text-center">{function="formatPrice($value.VALOR)"}</td>
+                      <td class="text-center">{function="formatPrice($value.SUBTOTAL)"}</td>
+                      <td align="center">
+                        <a href="/admin/manutencao/{$value.COD_ITEM}/{$ID_MANUTENCE}/item/cancel" onclick="confirmDelete2('74')" class="btn btn-link btn-danger btn-just-icon remove"><i class="material-icons">close</i>
+                        </a>
+                      </td>
+                    </tr>
+                    {$calcular = $calcular + $value.SUBTOTAL}
+                    {/loop}
+             
+                    <tr>
+                      <th scope="row" colspan="5">Totais</th>
+                      <th class="text-center">{function="formatPrice($calcular)"}</th>
+                      <th scope="row" colspan="3"></th>
+
+                    </tr>              
+                  </tbody>
+                </table>
+              </div>
+
+            </div> 
+          </div>                       
+        </div>
+        </div>
+      </form>
+    </div>
+  
+    {else}
+    <div class="alert alert-danger" role="alert">
+      <h3>Ops! Seu perfil não tem acesso a esta funcionalidade!</h3>
+    </div>
+  {/if}

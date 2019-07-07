@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+    <html lang='en'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+        <title>Relatório</title>
+        <style>
+        .header,
+        .footer {
+            width: 100%;
+            text-align: center;
+            
+        }
+        .header {
+            top: 0px;
+        }
+        .footer {
+            bottom: 0px;
+        }
+        .pagenum:before {
+            content: counter(page);
+        }
+        body{
+            
+            font-size: 10px;
+        }
+        .folha {
+            page-break-after: always;
+        }
+        table.tableBorder{
+            
+            border: 1px solid ;
+            
+        }
+        th{
+            text-align: center;   
+        }
+        td{
+            text-align: center;   
+        }
+        </style>
+    </head>
+    <body>
+    <div class='header folha'>
+            <table width='100%'>
+                <tr>
+                    <td>
+                        <img border='0' src='C:/wamp64/www/ecommerce/res/admin/material/assets/img/Logo.png' width='100' height='100'><br>
+                        <font size='4'> Relatório de Frete</font>
+                    </td>
+    
+                </tr>
+    
+            </table> <hr>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="text-center">Data Chegada</th>
+                <th>Id</th>
+                <th>Cliente</th>
+                <th>Motorista</th>
+                <th class="text-right">Valor Bruto</th>
+                <th class="text-right">Despesa</th>
+                <th class="text-right">Motorista</th>
+                <th class="text-right">Imposto</th>
+                <th class="text-right">Resultado</th>
+                <th class="text-right">Saldo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {loop="$dados"}
+            <tr>
+                <td class="text-center">{function="convertDatasHorasBR($value.DATA_CHEGADA)"}</td>
+                <td>{$value.COD_FRETE}</td>
+                <td>{$value.RAZAO_SOCIAL}</td>
+                <td>{$value.nome_func}</td>
+                <td class="text-right">{function="formatPrice($value.TOTAL_BRUTO)"}</td>
+                <td class="text-right">{function="formatPrice($value.TOTAL_DESPESAS)"}</td>
+                <td class="text-right">{function="formatPrice($value.TOTAL_MOTORISTA)"}</td>
+                <td class="text-right">{function="formatPrice($value.TOTAL_IMPOSTOS)"}</td>
+                <td class="text-right">{function="formatPrice($value.RESULTADO)"}</td>
+                <td class="text-right">{function="formatPrice($value.SALDO)"}</td>
+                TOTAL_SALDO
+            </tr>
+            {/loop}
+        </tbody>
+        <tfoot>
+                <tr style="font-weight: bolder">
+                        <td colspan="4" font size="7">TOTAL</td>
+                        <td class="text-right">{function="formatPrice($TOTAL_BRUTO)"}</td>
+                        <td class="text-right">{function="formatPrice($TOTAL_DESPESAS)"}</td>
+                        <td class="text-right">{function="formatPrice($TOTAL_MOTORISTA)"}</td>
+                        <td class="text-right">{function="formatPrice($TOTAL_IMPOSTOS)"}</td>
+                        <td class="text-right">{function="formatPrice($TOTAL_RESULTADO)"}</td>
+                        <td class="text-right">{function="formatPrice($TOTAL_SALDO)"}</td>
+                        
+                </tr>  
+        </tfoot>
+    </table>
+    <div class='footer'>
+        <hr><table class='table'>
+                        <tr>
+                            <td>
+                                $dataHoje
+                            </td>
+                            <td align='right'>
+                                $horaHoje
+                            </td>
+                        </tr>
+                    </table>
+                    </div>
+
+  </body>
+</html>
